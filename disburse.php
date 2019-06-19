@@ -1,51 +1,52 @@
-<!-- bank_code
-account_number
-amount
-remark -->
+<html>
 
+    <head>
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    </head> 
+
+    <body>
+
+        <h1>Disbursement Form</h1>
+        <form action="" method="POST">
+            <div class="handler">   
+                <label> Id: <br>
+                <input type="text" name="Id" class="Input" style="width: 225px" required>
+                </label>
+                <br>
+                <!-- <label> Dari: <br>
+                <input type="text" name="Dari" class="Input" style="width: 225px" required>
+                </label>
+                <br>
+                <label> Comment: <br>        
+                <textarea name="Comment" class="Input" rows="10" cols="50"  required></textarea>
+                </label>
+                <br> -->
+                <input type="submit" name="GetSubmit" value="Get Request" class="Submit">
+                <br>
+            </div>
+        </form>
+
+        <h1>Post Form</h1>
+        <form action="" method="POST">
+            <div class="handler">   
+                <label> Id: <br>
+                <input type="text" name="Id" class="Input" style="width: 225px" required>
+                </label>
+                <br>
+                <input type="submit" name="GetSubmit" value="Get Request" class="Submit">
+                <br>
+            </div>
+        </form>
+
+    </body>
+
+</html>
 <?php
+    include 'FlipStation.php';
 
+    $flipStation = new FlipStation;
 
-$username = "some-username";
-$password = "some-password";
-$data = array('bank_code' => 'bni', 'account_number' => 1234567890, 'amount' => '10000', 'remark' => 'this is a test');
-
-$url = 'https://nextar.flip.id';
-$opts = array(
-    'http' => array(
-        'method' => "GET",
-        'header' => "Accept-language: en\r\n" .
-            "Authorization: Basic " .
-            base64_encode("$username:$password")
-    )
-);
-
-$context = stream_context_create($opts);
-$file = file_get_contents($url, false, $opts);
-
-print($file);
-/* Sends an http request to www.example.com
-        with additional headers shown above */
-$fp = fopen('https://nextar.flip.id/disburse', 'r', false, $context);
-// print($fp);
-// fpassthru($fp);
-fclose($fp);
-
-// $data = array('bank_code' => 'bni', 'account_number' => 1234567890, 'amount' => '10000', 'remark' => 'this is a test');
-// // $data = array('key1' => 'value1', 'key2' => 'value2');
-// $secret_key = 'HyzioY7LP6ZoO7nTYKbG8O4ISkyWnX1JvAEVAhtWKZumooCzqp41';
-
-// // use key 'http' even if you send the request to https://...
-// $options = array(
-//     'http' => array(
-//         'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-//         'method'  => 'POST',    
-//         'content' => http_build_query($data)
-//     )
-// );
-// $context  = stream_context_create($options);
-// $result = file_get_contents($url, false, $context);
-// if ($result === FALSE) { /* Handle error */ }
-
-// var_dump($result);
+    $result = $flipStation->main();
+    echo $result;
 ?>
