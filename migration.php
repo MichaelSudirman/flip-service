@@ -1,10 +1,11 @@
 <?php
     include 'Database.php';
-    $database = Database::getInstance();
+    Database::migrateDatabase();
+    // $database = Database::getInstance();
     // $database->initializeServer();
     // $database->initializeConnection();
-    $database->migrateDatabase();
-    $database->closeConnection()
+    // $database->migrateDatabase();
+    // $database->closeConnection();
     // Initialize Server
 	// if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	// 	$uri = 'https://';

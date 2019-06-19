@@ -1,49 +1,41 @@
 <?php
     class Database {
         private static $instance = null;
-        private $connection = null;
+        private static $connection = null;
         // Might want to change 3 variables below according to your mysql settings
-        private $username = 'root';
-        private $password = '';
-        private $db_name = 'flip_db';
+        private const USERNAME = 'root';
+        private const PASSWORD = '';
+        private const DB_NAME = 'flip_db';
 
         private function __construct()
         {
-            $this->initializeServer();
-            $this->initializeConnection();
+            // Initialize and check connection
+            if(Database::$instance == null){
+                Database::$connection = mysqli_connect('localhost', Database::USERNAME, Database::PASSWORD);
+                if (Database::$connection->connect_error) {
+                    die("Connection failed: " . Database::$connection->connect_error);
+                } 
+                // Initialize database selection
+                mysqli_select_db(Database::$connection, Database::DB_NAME);
+            }
+            else{
+                throw new Exception("Attempt to instantiate another singleton Database!");
+            }
         }
 
+        // Singleton feature
         public static function getInstance()
         {
-            if (self::$instance == null)
+            if (Database::$instance == null)
             {
-            self::$instance = new Database();
+            Database::$instance = new Database();
             }
-        
-            return self::$instance;
-        }
-        public function initializeServer()
-        {
-            if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
-                $uri = 'https://';
-            } else {
-                $uri = 'http://';
-            }
-        }
-
-        public function initializeConnection()
-        {
-            // Initialize and check connection
-            $this->connection = mysqli_connect('localhost', $this->username, $this->password);
-            if ($this->connection->connect_error) {
-                die("Connection failed: " . $this->connection->connect_error);
-            } 
-            // Initialize database selection
-            mysqli_select_db($this->connection, $this->db_name);
+            return Database::$instance;
         }
 
         public function migrateDatabase()
         {
+            Database::getInstance();
             $sql_query = "CREATE TABLE IF NOT EXISTS `FLIP_DISBURSEMENT` (
                 `ID` int(11),
                 `STATUS` varchar(10),
@@ -51,7 +43,7 @@
                 `TIME_SERVED` DATETIME,
                 PRIMARY KEY (`ID`)
             );";
-            $success = mysqli_query($this->connection,$sql_query) or die (mysqli_error($this->connection));
+            $success = mysqli_query(Database::$connection,$sql_query) or die (mysqli_error(Database::$connection));
             if ($success) {
                 echo "Migration is run successfully!";
             } else {
@@ -61,7 +53,8 @@
 
         public function closeConnection()
         {
-	        mysqli_close($this->connection);
+            Database::getInstance();
+	        mysqli_close(Database::$connection);
         }
     }
 ?>
