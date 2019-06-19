@@ -19,7 +19,6 @@
                     // echo "Calling GetSubmit POST";
                     $result = $this->getRequest();
                     return $result;
-
                 }
                 if(isset($_POST['post_submit'])){
                     return $this->postRequest();
@@ -47,8 +46,7 @@
             echo "response:";
             echo $response;
             echo "<br>";
-            $cleaned_response = str_replace("{","",$response);
-            $cleaned_response = str_replace("}","",$cleaned_response);
+            $cleaned_response = str_replace(array('{', '}'),"",$response);
             $cleaned_response = (explode(",", $cleaned_response));
             $result = '';
             foreach ($cleaned_response as $value) {
@@ -79,13 +77,45 @@
             $context = stream_context_create($options);
             $file_open = fopen($post_url, 'rb', false, $context);
             // Read the POST data
-            $result = '';
+            // $result = '';
             // foreach ($file_open as $value) {
             //     $result .= $value . "<br>";
             // }
             // return $result;
-            $file = stream_get_contents($file_open);
-            return $file;
+            $response = stream_get_contents($file_open);
+            echo $response;
+            echo "<br><br><br><br>";
+            $json_response = json_decode($response, true);
+            $id = $json_response['id'];
+            $amount = $json_response['amount'];
+            $status = $json_response['status'];
+            $timestamp = $json_response['timestamp'];
+            $bank_code = $json_response['bank_code'];
+            $account_number = $json_response['account_number'];
+            $beneficiary_name = $json_response['beneficiary_name'];
+            $remark = $json_response['remark'];
+            $receipt = $json_response['receipt'];
+            $time_served = $json_response['time_served'];
+            $fee = $json_response['fee'];
+            echo "bankcode: ". gettype($bank_code);
+            echo 'INSERT INTO FLIP_DISBURSEMENT(ID, AMOUNT, STATUS, TIMESTAMP, BANK_CODE, ACCOUNT_NUMBER, BENEFICIARY_NAME, REMARK, RECEIPT, TIME_SERVED, FEE) VALUES 
+            ($json_response["id"], $json_response["amount"], $json_response["status"], $json_response["timestamp"], $json_response["bank_code"], $json_response["account_number"], $json_response["beneficiary_name"], $json_response["remark"],$json_response["receipt "], $json_response["time_served"], $json_response["fee"]);';
+            echo "<br><br><br><br>";
+            // $stmt = Database::$connection->('INSERT INTO FLIP_DISBURSEMENT(ID, AMOUNT, STATUS, TIMESTAMP, BANK_CODE, ACCOUNT_NUMBER, BENEFICIARY_NAME, REMARK, RECEIPT, TIME_SERVED, FEE) 
+            // VALUES (:id, :amount, :status, :timestamp, :bank_code, :account_number, :beneficiary_name, :remark, :receipt, :time_served, :fee);');
+            
+            // $json_response['timestamp'] = date("Y-m-d H:i:s", strtotime($json_response['timestamp']));
+            // // $test = date("Y-m-d H:i:s", strtotime($json_response['time_served']));
+            // $json_response['time_served'] = date("Y-m-d H:i:s", strtotime($json_response['time_served']));
+            // echo "TEST: $test";
+            
+            Database::executeThenInsert($json_response);
+
+            // $sql_query = 'INSERT INTO (FirstName, LastName, Age) VALUES (:first_name, :last_name, :age)';
+            // $stmt = mysqli::prepare('INSERT INTO (ID, AMOUNT, STATUS, TIMESTAMP, BANK_CODE, ACCOUNT_NUMBER, BENEFICIARY_NAME, REMARK, RECEIPT, TIME_SERVED, FEE) 
+            // VALUES (:id, :amount, :status, :timestamp, :bank_code, :account_number, :beneficiary_name, :receipt, :time_served, :fee)');
+            // Database::executeThenInsert();
+            // return $stmt;
             // echo $post_url;
             // return "TODO";
         }
