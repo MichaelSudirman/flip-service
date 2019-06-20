@@ -9,11 +9,10 @@
 
         public function main() {
             if(count($_POST)){
-                if(isset($_POST['get_submit'])){
-                    $result = $this->getRequest();
-                    return $result;
+                if(isset($_POST['get_submit'])){ 
+                    return $this->getRequest();
                 }
-                if(isset($_POST['post_submit'])){
+                elseif(isset($_POST['post_submit'])){
                     return $this->postRequest();
                 }
             }
@@ -37,10 +36,11 @@
             
             $context = stream_context_create($options);
             $response = file_get_contents($get_url, false, $context);
-            echo $response;
             $json_response = json_decode($response, true);
             Database::updateToDatabase($json_response);
-            return "Data has been updated successfully!";
+            echo "<div class='result'>Data has been updated successfully!";
+            echo "<pre>".json_encode($json_response,JSON_PRETTY_PRINT) . "</pre></div>";
+            echo "<script>alert('Data successfully updated!')</script>";
         }
 
         public function postRequest(){
@@ -67,10 +67,11 @@
             $context = stream_context_create($options);
             $file_open = fopen($post_url, 'rb', false, $context);
             $response = stream_get_contents($file_open);
-            echo $response;
             $json_response = json_decode($response, true);
             Database::insertToDatabase($json_response);
-            return "Data has been inserted successfully!";
+            echo "<div class='result'>Data has been inserted successfully!<pre>";
+            echo "<pre>".json_encode($json_response,JSON_PRETTY_PRINT) . "</pre></div>";
+            echo "<script>alert('Data successfully created!')</script>";
         }
     }
 ?>

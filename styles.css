@@ -1,5 +1,73 @@
 body{
-    font-size:16px;
-    font-family:"RaleWay", sans-serif;
-    text-align: center;    
+    font-family:"Roboto", sans-serif;
+    background-color: F6F6F6;
+    margin:0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#header{
+    font-size: 2.5em;
+    /* background-color: lightpink; */
+    text-align: center;
+    margin: 0.2em 0em;
+}
+#body{
+    width:60vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color:white;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.37);
+}
+.handler-header{
+    font-size: 2em;
+    text-align: center;
+    padding: 0em 1em;
+}
+.handler-content{
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+}
+.result{
+    margin: 1em 0em;
+    width:55vw;
+    /* background-color: lightgoldenrodyellow */
+}
+.create-transaction{
+    margin:1em;
+    background-color:white;
+    flex:1;
+    display: flex;
+    flex-direction: column;
+
+}
+.check-transaction{
+    margin:1em;
+    background-color: white;
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    
+}
+.horizontal-border{
+    width:0.1em;
+    background-color: rgba(0,0,0,0.37);
+}
+input[type=text] {
+    width: 100%;
+    padding: 6px 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.submit-button {
+    background-color: rgba(0,0,0,.15);
+    border: none;
+    border-radius: 0.2em;
+    width: 7em;
+    height: 2em;
+    cursor: pointer;
 }
