@@ -32,7 +32,7 @@
             return Database::$instance;
         }
 
-        public function insertToDatabase($array)
+        public function executeThenInsert($array)
         {
             Database::getInstance();
             $id = $array['id'];
@@ -45,31 +45,15 @@
             $remark = $array['remark'];
             $receipt = $array['receipt'];
             $time_served = $array['time_served'];
-            $fee = $array['fee'];            
-            $sql_query = "INSERT INTO `FLIP_DISBURSEMENT` VALUES 
+            $fee = $array['fee'];
+            $sql_query = "INSERT INTO FLIP_DISBURSEMENT VALUES 
             ($id, $amount, '$status', '$timestamp', '$bank_code', '$account_number', '$beneficiary_name', '$remark','$receipt', '$time_served', $fee);";
             Database::executeThenCommit($sql_query);
         }
-        
-        public function updateToDatabase($array)
-        {
-            Database::getInstance();
-            $id = $array['id'];
-            $status = $array['status'];
-            $receipt = $array['receipt'];
-            $time_served = $array['time_served'];
-            $fee = $array['fee']; 
-            $sql_query = "UPDATE `FLIP_DISBURSEMENT`
-            SET STATUS = '$status', RECEIPT ='$receipt' ,TIME_SERVED = '$time_served'
-            WHERE ID = $id;";
-            Database::executeThenCommit($sql_query);
-        }
-        
+
         public function executeThenCommit($sql_query){
-            $stmt = Database::$connection->prepare($sql_query); 
+            $stmt = Database::$connection->prepare($sql_query);
             $stmt->execute(); 
-            $stmt = Database::$connection->prepare('SELECT COUNT(*) FROM FLIP_DISBURSEMENT;');
-            $stmt->execute();
         }
 
         public function migrateDatabase()

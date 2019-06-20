@@ -7,28 +7,19 @@
 
     <body>
 
-        <h1>Disbursement Form</h1>
+        <h1>Check Transaction</h1>
         <form action="" method="POST">
             <div class="handler">   
                 <label>Id:</label>
                 <br>
                 <input type="text" name="id" class="Input" style="width: 225px" required>
-                
                 <br>
-                <!-- <label> Dari: <br>
-                <input type="text" name="Dari" class="Input" style="width: 225px" required>
-                </label>
-                <br>
-                <label> Comment: <br>        
-                <textarea name="Comment" class="Input" rows="10" cols="50"  required></textarea>
-                </label>
-                <br> -->
-                <input type="submit" name="get_submit" value="Get Request" class="Submit">
+                <input type="submit" name="get_submit" value="Submit" class="Submit">
                 <br>
             </div>
         </form>
 
-        <h1>Post Form</h1>
+        <h1>Create Transaction</h1>
         <form action="" method="POST">
             <div class="handler">
                 <label>Bank Code:</label>
@@ -48,7 +39,7 @@
                 <input type="text" name="remark" class="Input" style="width: 225px" required>
                 
                 <br>
-                <input type="submit" name="post_submit" value="Post Request" class="Submit">
+                <input type="submit" name="post_submit" value="Submit" class="Submit">
                 <br>
             </div>
         </form>
@@ -60,7 +51,7 @@
     include 'FlipStation.php';
 
     $flipStation = new FlipStation;
-
     $result = $flipStation->main();
     echo $result;
+    
 ?>
