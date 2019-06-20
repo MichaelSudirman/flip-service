@@ -64,7 +64,7 @@
 
 </html>
 <?php
-include 'FlipStation.php';
+include 'flipStation.php';
 
 $flipStation = new FlipStation;
 $flipStation->main();

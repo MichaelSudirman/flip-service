@@ -1,21 +1,20 @@
 <?php
+    include 'config.php';
+    
     class Database {
         private static $instance = null;
-        public static $connection = null;
+        private static $connection = null;
         // Might want to change 3 variables below according to your mysql settings
-        private const USERNAME = 'root';
-        private const PASSWORD = '';
-        private const DB_NAME = 'flip_db';
         private function __construct()
         {
             // Initialize and check connection
             if(Database::$instance == null){
-                Database::$connection = mysqli_connect('127.0.0.1', Database::USERNAME, Database::PASSWORD);
+                Database::$connection = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD);
                 if (Database::$connection->connect_error) {
                     die ("Connection failed: " . Database::$connection->connect_error);
                 } 
                 // Initialize database selection
-                mysqli_select_db(Database::$connection, Database::DB_NAME);
+                mysqli_select_db(Database::$connection, DB_NAME);
             }
             else{
                 die ("Attempt to instantiate another singleton Database!");
@@ -32,6 +31,7 @@
             return Database::$instance;
         }
 
+        // Create an SQL Statement for  inserting FLIP_DISBUREMENT table
         public function insertToDatabase($array)
         {
             Database::getInstance();
@@ -50,7 +50,8 @@
             ($id, $amount, '$status', '$timestamp', '$bank_code', '$account_number', '$beneficiary_name', '$remark','$receipt', '$time_served', $fee);";
             Database::executeThenCommit($sql_query);
         }
-        
+
+        // Create an SQL Statement for updating FLIP_DISBUREMENT table
         public function updateToDatabase($array)
         {
             Database::getInstance();
@@ -65,13 +66,13 @@
             Database::executeThenCommit($sql_query);
         }
         
+        // Prepare SQL statement and then execute
         public function executeThenCommit($sql_query){
             $stmt = Database::$connection->prepare($sql_query); 
-            $stmt->execute(); 
-            $stmt = Database::$connection->prepare('SELECT COUNT(*) FROM FLIP_DISBURSEMENT;');
             $stmt->execute();
         }
 
+        // Table Creation
         public function migrateDatabase()
         {
             Database::getInstance();
@@ -97,6 +98,7 @@
             }
         }
 
+        // Closing connection, not needed at the moment 
         public function closeConnection()
         {
             Database::getInstance();
